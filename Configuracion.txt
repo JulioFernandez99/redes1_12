@@ -1,0 +1,14 @@
+Configuración de vlan
+	Router con ip 192.178.17.1
+
+
+	enable
+	conf t
+	vlan 10
+	name primer_nivel
+	write memory
+
+	Ahora configurar con las ipc de la vlan 192.168.10.x
+	
+
+	
