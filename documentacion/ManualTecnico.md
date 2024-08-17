@@ -118,6 +118,6 @@ A continuación se presenta la captura de un paquete ARP/ICMP.
 
 ### 4.1. Captura de Paquete
 
-![Captura de Paquete]("../images/captura_icmp_rpa.jpeg")
+![Captura de Paquete](../images/captura_icmp_rpa.jpeg)
 
 Captura de pantalla sobre la captura de mensaje por ICMP/RPA
