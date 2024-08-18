@@ -84,31 +84,31 @@ A continuación se presentan las pruebas de conectividad realizadas entre difere
 
 ### 3.1. Ping 1: Administración ↔ Gerencia
 
-![Ping 1](ruta/a/captura1.png)
+![Ping 1](../images/img1.png)
 
 *(Inserta aquí la captura de pantalla del resultado del ping )*
 
 ### 3.2. Ping 2: Atención al Cliente ↔ Recursos Humanos
 
-![Ping 2](ruta/a/captura2.png)
+![Ping 2](../images/img2.png)
 
 *(Inserta aquí la captura de pantalla del resultado del ping entre )*
 
 ### 3.3. Ping 3: Oficina A ↔ Oficina B
 
-![Ping 3](ruta/a/captura3.png)
+![Ping 3](../images/img3.png)
 
 *(Inserta aquí la captura de pantalla del resultado del ping)*
 
 ### 3.4. Ping 4: Recepción ↔ TI
 
-![Ping 4](ruta/a/captura4.png)
+![Ping 4](../images/img4.png)
 
 *(Inserta aquí la captura de pantalla del resultado del ping )*
 
 ### 3.5. Ping 5: TI ↔ Ventas
 
-![Ping 5](ruta/a/captura5.png)
+![Ping 5](../images/img5.png)
 
 *(captura de pantalla del resultado del ping )*
 
