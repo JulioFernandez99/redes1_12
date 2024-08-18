@@ -2,8 +2,8 @@
 # Manual Técnico - Práctica 1
 
 ## Integrantes del Grupo
-- 👨🏻‍💻 Julio Alfredo Fernandez Rodriguez 1 - Carnet
-- 👩🏻‍💻 Sharon Estefany Tagual Godoy 		  - Carnet
+- 👨🏻‍💻 Julio Alfredo Fernandez Rodriguez 1 - 201902416
+- 👩🏻‍💻 Sharon Estefany Tagual Godoy 		  - 201906173
 - 🐶 Albertt Wosveli Itzep Raymundo 	  - 201908658
 
 ## 1. Descripción General
