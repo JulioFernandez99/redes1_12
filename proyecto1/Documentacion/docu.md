@@ -28,7 +28,7 @@ Los departamentos y sus VLANs asignadas son:
 
 ### Áreas específicas
 #### Área administrativa
-![alt text](./assets/image.png)
+![alt text](./assets/administrativa.png)
 
 #### Área central
 ![alt text](./assets/central.png)
