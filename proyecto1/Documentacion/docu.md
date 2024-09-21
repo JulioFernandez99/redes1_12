@@ -110,6 +110,12 @@ Se implementará **PVST+** (Per VLAN Spanning Tree) para las VLANs. El switch pr
 
 ![alt text](./assets/ping.png)
 
+
+## Presupuesto
+
+![alt text](./assets/presupuesto.png)
+
+
 ### Verificación de Redundancia
 Para probar la redundancia de la red, se debe desconectar un enlace entre switches y verificar que STP rerutea el tráfico a través de una ruta alternativa. Los comandos de verificación son:
 ```bash
@@ -117,6 +123,3 @@ show spanning-tree
 show spanning-tree active
 
 
-## Presupuesto
-
-![alt text](./assets/presupuesto.png)
