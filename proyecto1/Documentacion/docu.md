@@ -115,3 +115,8 @@ Para probar la redundancia de la red, se debe desconectar un enlace entre switch
 ```bash
 show spanning-tree
 show spanning-tree active
+
+
+## Presupuesto
+
+![alt text](./assets/presupuesto.png)
