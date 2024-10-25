@@ -1,0 +1,71 @@
+ip route 192.178.0.0 255.255.255.0 IP-SWITCH
+Al switch izquierdo le configuramos la IP 192.178.0.2 255.255.255.0
+Al switch derecho le configuramos la IP 192.168.0.2 255.255.255.0
+La VPC del lado izquiero tiene la IP 192.178.0.1 255.255.255.0
+La VPC del lado derecho tiene la IP 192.178.0.1 255.255.255.0
+
+Configuracion R1
+enable
+conf t
+hostname R1
+int gig0/0/1
+// Del router al switch
+ip add 192.178.0.2 255.255.255.0
+no shut
+int gig0/0/0
+// De router a router
+ip add 10.0.0.1 255.255.255.0
+no shut
+// Dejamos pasar el trafico del lado derecho
+ip route 192.168.0.0 255.255.255.0 10.0.0.2
+do wr
+
+Configuracion R2
+enable
+conf t
+hostname R2
+int gig0/0/1
+// Del router al switch
+ip add 192.168.0.2 255.255.255.0
+no shut
+int gig0/0/0
+// De router a router, esta ip debe ir en la gateway de la VPC
+ip add 10.0.0.2 255.255.255.0
+no shut
+// Dejamos pasar el trafico del lado izquierdo
+ip route 192.178.0.0 255.255.255.0 10.0.0.1
+do wr
+
+
+Configuracion SW1
+enable
+conf t
+hostname SW1
+vlan 10
+name Left_Network
+exit
+
+int fa0/1
+switchport mode access
+switchport access vlan 10
+exit
+
+do wr
+
+
+Configuracion SW2
+enable
+conf t
+hostname SW2
+vlan 20
+name Right_Network
+exit
+
+int fa0/1
+switchport mode access
+switchport access vlan 20
+exit
+
+do wr
+
+
