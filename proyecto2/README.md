@@ -1,13 +1,13 @@
 ![](https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif)
 
 <div style="text-align: center;">
-    &nbsp; <span style="font-size: 18px;">Universidad de San Carlos de Guatemala</span><br>
+    <span style="font-size: 18px;">Universidad de San Carlos de Guatemala</span><br>
     <span style="font-size: 18px;">Facultad de Ingeniería</span><br>
     <span style="font-size: 18px;">Escuela de Ciencias y Sistemas</span><br>
     <span style="font-size: 18px;">Laboratorio Redes de Computadoras 1 Sección N</span><br>
     <span style="font-size: 18px;">Julio Alfredo Fernández Rodríguez 201902416</span><br>
     <span style="font-size: 18px;">	Sharon Estefany Tagual Godoy201906173</span><br>
-    <span style="font-size: 18px;">Albertt Wosvelí Itzep Raymundo 201908658</span> &nbsp;
+    <span style="font-size: 18px;">Albertt Wosvelí Itzep Raymundo 201908658</span> 
 </div>
 
 <br>
