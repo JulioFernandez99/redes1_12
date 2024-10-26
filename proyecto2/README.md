@@ -14,6 +14,291 @@
 
 ![](https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif)
 
+# <img src="https://user-images.githubusercontent.com/74038190/216649443-702212b5-2704-4b2c-8ab0-38bf536a0d41.gif" width="70px" /> &nbsp; Configuracion parte simulada &nbsp; 
+
+
+
+### Configuración de Dispositivos de Red
+
+A continuación se describe la configuración detallada de los dispositivos de red utilizados en esta topología, organizada por cada equipo y con explicaciones específicas para cada sección de configuración.
+
+---
+
+### Configuración de **Switch0**
+
+Este dispositivo es el primero en la topología y tiene la tarea de configurar diferentes VLANs para separar el tráfico de distintas áreas de la organización.
+
+1. **Creación de VLANs**: Las VLANs 18, 28, 38 y 48 representan departamentos específicos como RRHH, Contabilidad, Ventas e Informática.
+2. **Asignación de Puertos a VLANs**: Algunos puertos se asignan a VLANs específicas para asegurar que solo el tráfico de esas áreas circule por los puertos asignados.
+3. **Configuración de EtherChannel**: Los puertos `fa0/4` y `fa0/5` están configurados para formar un grupo de enlace (EtherChannel) en modo activo.
+4. **Configuración VTP**: Este switch está en modo cliente, dentro del dominio `jutiapa`, para recibir las configuraciones de VLAN de un servidor VTP.
+
+```plaintext
+enable
+conf t
+hostname Switch0
+
+vlan 18
+name RRHH
+
+vlan 28
+name Contabilidad
+
+vlan 38
+name Ventas
+
+vlan 48
+name Informatica
+
+interface fa0/3
+switchport mode access
+switchport access vlan 18
+
+interface fa0/1
+switchport mode access
+switchport access vlan 28
+
+interface fa0/2
+switchport mode access
+switchport access vlan 38
+
+interface fa0/4
+channel-group 1 mode active
+
+interface fa0/5
+channel-group 1 mode active
+
+interface fa0/6
+switchport mode trunk
+
+vtp mode client
+vtp domain jutiapa
+```
+
+---
+
+### Configuración de **Switch1**
+
+Este segundo switch sigue una configuración similar a Switch0, con algunas diferencias en la asignación de VLANs a puertos y en la configuración de EtherChannel en modo pasivo.
+
+1. **Asignación de VLANs a Puertos**: Aquí los puertos `fa0/3`, `fa0/1` y `fa0/2` se asignan a VLANs diferentes, asegurando que los distintos departamentos tengan el tráfico separado.
+2. **EtherChannel Pasivo**: Los puertos `fa0/4` y `fa0/5` se configuran para agruparse en modo pasivo en lugar de activo.
+3. **Configuración VTP**: Configurado como cliente en el dominio `jutiapa`.
+
+```plaintext
+enable
+conf t
+hostname Switch1
+
+vlan 18
+name RRHH
+
+vlan 28
+name Contabilidad
+
+vlan 38
+name Ventas
+
+vlan 48
+name Informatica
+
+interface fa0/3
+switchport mode access
+switchport access vlan 48
+
+interface fa0/1
+switchport mode access
+switchport access vlan 18
+
+interface fa0/2
+switchport mode access
+switchport access vlan 38
+
+interface fa0/4
+channel-group 1 mode passive
+
+interface fa0/5
+channel-group 1 mode passive
+
+interface fa0/6
+switchport mode trunk
+
+vtp mode client
+vtp domain jutiapa
+```
+
+---
+
+### Configuración de **ESW1** (Switch)
+
+ESW1 se configura como el servidor VTP de la red, definiendo VLANs y actuando como punto de acceso a la red IP para cada VLAN mediante interfaces de SVI (Switch Virtual Interface).
+
+1. **Creación de VLANs**: Define las VLANs necesarias para los diferentes departamentos.
+2. **Asignación de IP a SVI**: Se asignan direcciones IP a cada VLAN para permitir el enrutamiento inter-VLAN.
+3. **Configuración VTP**: Se establece como servidor VTP y se asigna el dominio `jutiapa`.
+4. **Spanning Tree RPVST**: Configuración de Rapid PVST para mejorar la eficiencia en la convergencia de la red.
+
+```plaintext
+enable
+conf t
+hostname ESW1
+
+vlan 18
+name RRHH
+
+vlan 28
+name Contabilidad
+
+vlan 38
+name Ventas
+
+vlan 48
+name Informatica
+
+interface vlan 18
+ip address 192.168.12.49 255.255.255.240
+
+interface vlan 38
+ip address 192.168.12.1 255.255.255.224
+
+interface vlan 48
+ip address 192.168.12.33 255.255.255.240
+
+interface vlan 28
+ip address 192.168.12.65 255.255.255.248
+
+interface fa0/1
+switchport mode trunk
+
+interface fa0/2
+switchport mode trunk
+
+interface fa0/3
+switchport mode trunk
+
+interface fa0/4
+switchport mode trunk
+
+vtp mode server
+vtp domain jutiapa
+
+spanning-tree mode rapid-pvst
+```
+
+---
+
+### Configuración del **Router J2**
+
+El Router J2 gestiona el tráfico de las diferentes VLANs y proporciona redundancia mediante HSRP (Hot Standby Router Protocol). También tiene una conexión con un router externo a través de la interfaz `fa1/0`.
+
+1. **Subinterfaces de VLAN**: Cada VLAN tiene una subinterfaz con su respectiva IP y configurada con HSRP para failover.
+2. **Conexión WAN**: La interfaz `fa1/0` conecta a una red externa.
+
+```plaintext
+enable
+conf t
+hostname J2
+
+interface fa0/0.18
+encapsulation dot1Q 18
+ip address 192.168.12.50 255.255.255.240
+standby ip 192.168.12.62
+
+interface fa0/0.28
+encapsulation dot1Q 28
+ip address 192.168.12.66 255.255.255.248
+standby ip 192.168.12.70
+
+interface fa0/0.38
+encapsulation dot1Q 38
+ip address 192.168.12.2 255.255.255.224
+standby ip 192.168.12.30
+
+interface fa0/0.48
+encapsulation dot1Q 48
+ip address 192.168.12.34 255.255.255.240
+standby ip 192.168.12.46
+
+interface fa1/0
+ip address 11.0.0.2 255.255.255.252
+```
+
+---
+
+### Configuración del **Router J1**
+
+J1 es el router de respaldo y comparte la configuración HSRP con J2. Al igual que J2, J1 tiene subinterfaces para cada VLAN.
+
+```plaintext
+enable
+conf t
+hostname J1
+
+interface fa0/0.18
+encapsulation dot1Q 18
+ip address 192.168.12.51 255.255.255.240
+standby ip 192.168.12.62
+
+interface fa0/0.28
+encapsulation dot1Q 28
+ip address 192.168.12.67 255.255.255.248
+standby ip 192.168.12.70
+
+interface fa0/0.38
+encapsulation dot1Q 38
+ip address 192.168.12.3 255.255.255.224
+standby ip 192.168.12.30
+
+interface fa0/0.48
+encapsulation dot1Q 48
+ip address 192.168.12.35 255.255.255.240
+standby ip 192.168.12.46
+
+interface fa1/0
+ip address 11.0.0.6 255.255.255.252
+```
+
+---
+
+### Configuración del **Router JUTIAPA**
+
+Este router centraliza la conectividad para múltiples redes a través de interfaces independientes y utiliza RIP para enrutar tráfico entre las redes `10.0.0.0` y `11.0.0.0`.
+
+```plaintext
+enable
+conf t
+hostname JUTIAPA
+
+interface fa1/0
+ip address 10.0.1.1 255.255.255.252
+
+interface fa0/0
+ip address 10.0.2.1 255.255.255.252
+
+interface fa3/0
+ip address 10.0.3.1 255.255.255.252
+
+interface fa4/0
+ip address 10.0.4.1 255.255.255.252
+
+interface fa5/0
+ip address 10.0.5.1 255.255.255.252
+
+interface fa6/0
+ip address 10.0.6.1 255.255.255.252
+
+router rip
+version 2
+network 10.0.0.0
+network 11.0.0.0
+redistribute ospf 1 metric 1
+redistribute eigrp 100 metric 1
+redistribute static
+```
+
+---
+
+
 
 # <img src="https://user-images.githubusercontent.com/74038190/216655818-2e7b9a31-49bf-4744-85a8-db8a2577c45c.gif" width="70px" /> &nbsp; Configuracion parte fisica &nbsp; 
 
